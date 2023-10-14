@@ -51,7 +51,7 @@ namespace ServerStatisticsCollectionService
             while (!File.Exists(Path.Combine(currentDirectory, "appsettings.json")))
             {
                 DirectoryInfo parentDirectory = Directory.GetParent(currentDirectory);
-                if (parentDirectory == null)
+                if (parentDirectory is null)
                 {
                     throw new Exception("appsettings.json not found in the directory tree.");
                 }
