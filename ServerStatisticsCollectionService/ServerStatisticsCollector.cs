@@ -18,6 +18,10 @@ namespace ServerStatisticsCollectionService
             _timer?.Change(Timeout.Infinite, 0);
             _timer?.Dispose();
         }
+        public ServerStatisticsCollector(IMessageQueue messageQueue)
+        {
+            _messageQueue = messageQueue;
+        }
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _samplingIntervalSeconds = AppConfiguration.SamplingIntervalSeconds;
@@ -42,7 +46,7 @@ namespace ServerStatisticsCollectionService
                 Timestamp = DateTime.UtcNow
             };
 
-            _messageQueue.Publish($"{Topics.ServerStatistics.ToString()}.{_serverIdentifier}", statistics);
+            _messageQueue.Publish($"{Topics.ServerStatistics}.{_serverIdentifier}", statistics);
         }
         private double GetMemoryUsage()
         {
